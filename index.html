@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal Social Links</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Courier New', monospace;
+            background: black;
+            color: #9bff04;
+            overflow: hidden;
+        }
+
+        #matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.3;
+            filter: blur(1px);
+        }
+        
+
+        .terminal-container {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .terminal {
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid #9bff04;
+            border-radius: 10px;
+            padding: 20px;
+            width: 600px;
+            max-width: 90%;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+        }
+
+        .terminal-header {
+            border-bottom: 1px solid #9bff04;
+            text-shadow: 0 0 3px #9bff04;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .terminal-body {
+            line-height: 1.6;
+        }
+
+        .prompt {
+            margin-bottom: 10px;
+            color: #cdff04;
+            text-shadow: 0 0 3px #ffff00;
+        }
+
+        .prompt::before {
+            content: "visitor@terminal:~$ ";
+            color: #9bff04;
+            text-shadow: 0 0 3px #9bff04;
+            
+        }
+
+        .links {
+            padding-left: 20px;
+        }
+
+        a {
+            color: #ffff00;
+            text-decoration: none;
+            transition: all 0.3s ease;
+
+            text-shadow: 0 0 3px #ffff00;
+        }
+        
+        .terminal-text{
+            color: #cdff04;
+            text-shadow: 0 0 3px #ffff00;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 15px;
+            background: #9bff04;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="matrix-bg"></canvas>
+    <div class="terminal-container">
+        <div class="terminal">
+            <div class="terminal-header">
+                Social Media Links - Terminal
+            </div>
+            <div class="terminal-body">
+                <div class="prompt">welcome.txt</div>
+                <p class="terminal-text">Welcome to my social media terminal! Feel free to connect with me:</p>
+                
+                <div class="prompt">social_links.txt</div>
+                <div class="links">
+                    <p> <a href="https://github.com/YOUR_USERNAME" target="_blank">→ GitHub:</a></p>
+                    <p> <a href="https://linkedin.com/in/YOUR_USERNAME" target="_blank">→ LinkedIn:</a></p>
+                    <p> <a href="https://twitter.com/YOUR_USERNAME" target="_blank">→ Twitter:</a></p>
+                    <p> <a href="https://instagram.com/YOUR_USERNAME" target="_blank">→ Instagram:</a></p>
+                </div>
+                
+                <div class="prompt">
+                    <span class="cursor"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('matrix-bg');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&*";
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = new Array(Math.floor(columns)).fill(1);
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#0F0';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        setInterval(drawMatrix, 50);
+    </script>
+</body>
+</html>
